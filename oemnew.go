@@ -11,7 +11,7 @@ type OEM struct {
 }
 
 //this struct is for purchase order
-
+//all the time will be stored using the go "time" package class , on return it will be changed to string
 type PoOrder struct {
 	PoID                 string       `json:"poID"`
 	OemID                string       `json:"oemID"`
@@ -390,7 +390,7 @@ func (t *OEM) Invoke(stub shim.ChaincodeStubInterface, function string, args []s
 		}
 
 		v := t.convertInvoice(row)
-
+		fmt.Println("the status id"+v.Status+"the new status is"+args[1])
 		var columns []*shim.Column
 		cl1 := shim.Column{Value: &shim.Column_String_{String_: v.InvoiceID}}
 		cl2 := shim.Column{Value: &shim.Column_String_{String_: v.PoID}}
