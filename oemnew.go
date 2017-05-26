@@ -388,7 +388,6 @@ func (t *OEM) Invoke(stub shim.ChaincodeStubInterface, function string, args []s
 			return nil, fmt.Errorf("getRowTableOne operation failed. %s", err)
 			panic(err)
 		}
-
 		v := t.convertInvoice(row)
 		fmt.Println("the status id"+v.Status+"the new status is"+args[1])
 		var columns []*shim.Column
@@ -411,7 +410,7 @@ func (t *OEM) Invoke(stub shim.ChaincodeStubInterface, function string, args []s
 		columns = append(columns, &cl8)
 		
 		rw := shim.Row{Columns: columns}
-		ok, err := stub.ReplaceRow("PurchaseOrder", rw)
+		ok, err := stub.ReplaceRow("InvoiceDetails", rw)
 
 		if err != nil {
 			return nil, fmt.Errorf("replaceRowTableOne operation failed. %s", err)
@@ -680,7 +679,7 @@ func (t *OEM) Query(stub shim.ChaincodeStubInterface, function string, args []st
 		}
 
 		v := t.convertInvoice(row)
-
+		
 		json_byte, err := json.Marshal(v)
 
 		if err != nil {
@@ -736,6 +735,7 @@ func (t *OEM) convertInvoice(row shim.Row) InvoiceDetails {
 	u.InvoiceAmount = row.Columns[6].GetString_()
 	u.Status = row.Columns[7].GetString_()
 	
+	fmt.Println("The value of status in covert method is"+u.Status)
 	
 	return u
 }
