@@ -668,7 +668,7 @@ func (t *OEM) Query(stub shim.ChaincodeStubInterface, function string, args []st
 		columns = append(columns, col1)
 	
 
-		row, err := stub.GetRow("PurchaseOrder", columns)
+		row, err := stub.GetRow("InvoiceDetails", columns)
 		if err != nil {
 			return []byte("No record found for id: " + col1Val), fmt.Errorf("getRowTableOne operation failed. %s", err)
 			panic(err)
@@ -679,7 +679,7 @@ func (t *OEM) Query(stub shim.ChaincodeStubInterface, function string, args []st
 			panic("No record found for id")
 		}
 
-		v := t.convert(row)
+		v := t.convertInvoice(row)
 
 		json_byte, err := json.Marshal(v)
 
