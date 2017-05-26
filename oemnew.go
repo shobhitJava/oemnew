@@ -28,7 +28,7 @@ type PoOrder struct {
 	FinancialAgreementNo string		  `json:"financialAgreementNo"`
 }
 
-//this struct is tp create orederdetails
+//this struct is to create orederdetails
 type OrderDetails struct {
 	VehicleMake string `json:"make"`
 	Model       string `json:"model"`
@@ -36,7 +36,7 @@ type OrderDetails struct {
 	Quantity	string	`json:"quantity"`
 }
 
-
+//this struct is to create InvoiceDetails
 type InvoiceDetails struct {
 	InvoiceID     string	`json:"invoiceID"`
 	PoID          string	`json:"poID"`												
@@ -157,7 +157,7 @@ func createTableTwo(stub shim.ChaincodeStubInterface) error {
 	columnTableOne = append(columnTableOne, &columnSix)
 	columnTableOne = append(columnTableOne, &columnSeven)
 	columnTableOne = append(columnTableOne, &columnEight)
-	)
+	
 	
 	return stub.CreateTable("InvoiceDetails", columnTableOne)
 }
@@ -319,8 +319,12 @@ func (t *OEM) Invoke(stub shim.ChaincodeStubInterface, function string, args []s
 		if err != nil {
 		return nil, nil
 		panic(err)	
+		}
+		
+		
 		u:=PoOrder{}
-		json.Unmarshal(data, &u)
+		json.Unmarshal(valAsbytes, &u)
+		
 		if u.DealerID != ""{
 			return nil, nil
 		} else{
@@ -363,8 +367,9 @@ func (t *OEM) Invoke(stub shim.ChaincodeStubInterface, function string, args []s
 		if !ok {
 			return []byte("Row with given key" + args[0] + " already exists"), errors.New("insertTableOne operation failed. Row with given key already exists")
 		}
+		}
 		
-		case "updateInvoice":
+		case  "updateInvoice":
 		if len(args) < 1 {
 			return nil, errors.New("updatePo failed. Must have atleast 1 column values")
 		}
@@ -419,10 +424,9 @@ func (t *OEM) Invoke(stub shim.ChaincodeStubInterface, function string, args []s
 
 	default:
 		return nil, errors.New("Unsupported operation")
-	}
-		
-	return nil, nil
-
+	
+		}
+return nil,nil
 }
 
 func (t *OEM) Query(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
