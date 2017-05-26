@@ -11,7 +11,7 @@ type OEM struct {
 }
 
 //this struct is for purchase order
-//all the time will be stored using the go "time" package class , on return it will be changed to string
+
 type PoOrder struct {
 	PoID                 string       `json:"poID"`
 	OemID                string       `json:"oemID"`
@@ -325,7 +325,7 @@ func (t *OEM) Invoke(stub shim.ChaincodeStubInterface, function string, args []s
 		u:=PoOrder{}
 		json.Unmarshal(valAsbytes, &u)
 		
-		if u.DealerID != ""{
+		if u.DealerID == ""{
 			return nil, nil
 		} else{
 		col1Val := args[0]
