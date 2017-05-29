@@ -773,7 +773,7 @@ func (t *OEM) Query(stub shim.ChaincodeStubInterface, function string, args []st
 					u.Model = row.Columns[4].GetString_()
 					u.InvoiceDate = row.Columns[5].GetString_()
 					u.InvoiceAmount = row.Columns[6].GetString_()
-					if row.Columns[7].GetString_() == args[1]{
+					if row.Columns[7].GetString_() == args[0]{
 						u.Status = row.Columns[7].GetString_()
 					res2E = append(res2E, u)
 					}
