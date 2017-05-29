@@ -28,7 +28,7 @@ type PoOrder struct {
 	FinancialAgreementNo string		  `json:"financialAgreementNo"`
 }
 
-//this struct is to create orederdetails
+//this struct is to create orderdetails
 type OrderDetails struct {
 	VehicleMake string `json:"make"`
 	Model       string `json:"model"`
@@ -654,7 +654,7 @@ func (t *OEM) Query(stub shim.ChaincodeStubInterface, function string, args []st
 
 		return jsonRows, nil
 		
-		case "getPoByInvoiceId":
+		case "getInvoiceById":
 		if len(args) < 1 {
 			return nil, errors.New("getRowTableOne failed. Must include 1 key value")
 		}
@@ -688,6 +688,59 @@ func (t *OEM) Query(stub shim.ChaincodeStubInterface, function string, args []st
 			panic(err)
 		}
 		return json_byte, nil
+		
+		case "getAllInvoiceByPoID":
+		if len(args) < 1 {
+			return nil, errors.New("getRowsTableFour failed. Must include 1 key value")
+		}
+
+		var columns []shim.Column
+
+		rowChannel, err := stub.GetRows("InvoiceDetails", columns)
+
+		if err != nil {
+			return nil, fmt.Errorf("getRowsTableFour operation failed. %s", err)
+		}
+
+		res2E := []*InvoiceDetails{}
+
+		for {
+			select {
+
+			case row, ok := <-rowChannel:
+
+				if !ok {
+					rowChannel = nil
+				} else {
+
+					u := new(InvoiceDetails)
+					u.InvoiceID = row.Columns[0].GetString_()
+					u.Vin = row.Columns[2].GetString_()
+					u.VehicleMake = row.Columns[3].GetString_()
+					u.Model = row.Columns[4].GetString_()
+					u.InvoiceDate = row.Columns[5].GetString_()
+					u.InvoiceAmount = row.Columns[6].GetString_()
+					u.Status = row.Columns[7].GetString_()
+					if row.Columns[1].GetString_() == args[0]{
+						u.PoID = row.Columns[1].GetString_()
+					res2E = append(res2E, u)
+					}
+					
+				}
+			}
+			if rowChannel == nil {
+				break
+			}
+		}
+
+		jsonRows, err := json.Marshal(res2E)
+
+		if err != nil {
+			return nil, fmt.Errorf("getRowsTableFour operation failed. Error marshaling JSON: %s", err)
+		}
+
+		return jsonRows, nil
+		
 	
 	default:
 		return nil, errors.New("Unsupported operation")
