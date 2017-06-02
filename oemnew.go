@@ -511,11 +511,13 @@ func (t *OEM) Query(stub shim.ChaincodeStubInterface, function string, args []st
 					v.VehicleMake = row.Columns[7].GetString_()
 					v.Model = row.Columns[8].GetString_()
 					v.Price = row.Columns[9].GetString_()
+					v.Quantity=row.Columns[14].GetString_()
 					u.Order = v
 					u.PoAmount = row.Columns[10].GetString_()
 					u.PoCreationDate = row.Columns[11].GetString_()
 					u.ExpectedDeliveryDate = row.Columns[12].GetString_()
 					u.Status = row.Columns[13].GetString_()
+					u.FinancialAgreementNo=row.Columns[15].GetString_()
 					res2E = append(res2E, u)
 				}
 			}
@@ -568,11 +570,13 @@ func (t *OEM) Query(stub shim.ChaincodeStubInterface, function string, args []st
 					v.VehicleMake = row.Columns[7].GetString_()
 					v.Model = row.Columns[8].GetString_()
 					v.Price = row.Columns[9].GetString_()
+					v.Quantity=row.Columns[14].GetString_()
 					u.Order = v
 					u.PoAmount = row.Columns[10].GetString_()
 					u.PoCreationDate = row.Columns[11].GetString_()
 					u.ExpectedDeliveryDate = row.Columns[12].GetString_()
 					u.Status = row.Columns[13].GetString_()
+					u.FinancialAgreementNo=row.Columns[15].GetString_()
 					if row.Columns[1].GetString_() == args[0]{
 						u.OemID = row.Columns[1].GetString_()
 					res2E = append(res2E, u)
