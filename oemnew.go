@@ -11,7 +11,6 @@ type OEM struct {
 }
 
 //this struct is for purchase order
-//all the time will be stored using the go "time" package class , on return it will be changed to string
 type PoOrder struct {
 	PoID                 string       `json:"poID"`
 	OemID                string       `json:"oemID"`
